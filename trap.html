@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: url('image.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+        #warning {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: red;
+            color: white;
+            font-size: 2rem;
+            padding: 20px;
+            border: 3px solid black;
+            z-index: 9999;
+        }
+        #modal {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div id="warning">🤡ÅŤÅQŮĘ ĐØ§ PÅĽHÅÇØ§ ĽØĶØ🤡</div>
+    <div id="modal">Unactivated, press ~ to activate</div>
+    <audio id="siren" src="siren.mp3" loop></audio>
+
+    <script>
+        let trapActive = false;
+        let triggered = false;
+
+        const siren = document.getElementById('siren');
+        const warning = document.getElementById('warning');
+        const modal = document.getElementById('modal');
+
+        // Function to toggle the trap
+        const toggleTrap = () => {
+            trapActive = !trapActive;
+            triggered = false; // Reset trigger state
+            if (trapActive) {
+                modal.style.display = 'none'; // Hide modal
+                siren.pause();
+                siren.currentTime = 0;
+                warning.style.display = 'none';
+            } else {
+                modal.style.display = 'block'; // Show modal
+                siren.pause();
+                siren.currentTime = 0;
+                warning.style.display = 'none';
+            }
+        };
+
+        // Function to trigger chaos
+        const triggerChaos = () => {
+            if (trapActive && !triggered) {
+                triggered = true;
+                siren.play();
+                warning.style.display = 'block';
+            }
+        };
+
+        // Listen for the "~" key to toggle trap
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Dead') {
+                toggleTrap();
+            }
+        });
+
+        // Detect mouse movement or key press to trigger chaos
+        window.addEventListener('mousemove', triggerChaos);
+        window.addEventListener('keydown', (e) => {
+            if (e.key !== 'Dead') {
+                triggerChaos();
+            }
+        });
+
+        // Intercept attempts to close or leave the page
+        window.onbeforeunload = (e) => {
+            if (trapActive) {
+                const message = "Are you sure you wanna leave this site?";
+                e.returnValue = message; // For modern browsers
+                return message;          // For legacy browsers
+            }
+        };
+
+        // Prevent closing by reopening the page
+        window.addEventListener('unload', () => {
+            if (trapActive) {
+                setTimeout(() => {
+                    window.open(location.href, '_self');
+                }, 0);
+            }
+        });
+
+        // Show the modal initially
+        modal.style.display = 'block';
+    </script>
+</body>
+</html>
